@@ -1,0 +1,12 @@
+{
+  "name": "aws-lambda-cf-resizeimage-viewer-request",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "keywords": [],
+  "author": "Tran Kim Tung <contact@trankimtung.com> (https://www.trankimtung.com)",
+  "license": "MIT",
+  "dependencies": {
+    "querystring": "^0.2.0"
+  }
+}

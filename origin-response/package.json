@@ -1,0 +1,15 @@
+{
+  "name": "aws-lambda-cf-resizeimage-origin-response",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "keywords": [],
+  "author": "Tran Kim Tung <contact@trankimtung.com> (https://www.trankimtung.com)",
+  "license": "MIT",
+  "dependencies": {
+    "sharp": "^0.22.1"
+  },
+  "devDependencies": {
+    "aws-sdk": "^2.446.0"
+  }
+}
