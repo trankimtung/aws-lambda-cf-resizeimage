@@ -30,7 +30,7 @@ exports.handler = (event, context, callback) => {
     const request = event.Records[0].cf.request;
 
     // parse prefix, image name and extension from original uri: <prefix>/<imageName>.<extension>
-    const uriMatch = uri.match(/(.*)\/(.*)\.(.*)/);
+    const uriMatch = request.uri.match(/(.*)\/(.*)\.(.*)/);
     let prefix = uriMatch[0];
     let imageName = uriMatch[1];
     let extension = uriMatch[2];
