@@ -47,10 +47,10 @@ exports.handler = (event, context, callback) => {
             // try matching s3 key with format <prefix>/<width>/<image_name>.<extension>
             // if matches, client is requesting resized version, which does not exist yet.
             let match = s3Key.match(/(.*)\/(\d+)\/(.*)\.(.*)/);
-            prefix = match[0];
-            width = match[1];
-            imageName = match[2];
-            extension = match[3];
+            prefix = match[1];
+            width = match[2];
+            imageName = match[3];
+            extension = match[4];
         } catch (e) {
             // client is requesting original image, s3 object key format is <prefix>/<image_name>.<extension>
             // immediately return original 404 response because original image does not exist.

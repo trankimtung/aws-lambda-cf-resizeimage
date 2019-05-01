@@ -31,9 +31,9 @@ exports.handler = (event, context, callback) => {
 
     // parse prefix, image name and extension from original uri: <prefix>/<imageName>.<extension>
     const uriMatch = request.uri.match(/(.*)\/(.*)\.(.*)/);
-    let prefix = uriMatch[0];
-    let imageName = uriMatch[1];
-    let extension = uriMatch[2];
+    let prefix = uriMatch[1];
+    let imageName = uriMatch[2];
+    let extension = uriMatch[3];
 
     // if querystring contains width value, try to match with largest supported value below specified value
     let width = undefined;
