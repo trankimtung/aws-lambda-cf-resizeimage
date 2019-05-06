@@ -32,11 +32,12 @@ const Sharp = require('sharp');
 
 exports.handler = (event, context, callback) => {
     let response = event.Records[0].cf.response;
-    console.log("Response status code :%s", response.status);
 
+    console.log("Origin response status: %s", response.status);
     if (response.status == 404) {
         let request = event.Records[0].cf.request;
         let s3Key = request.uri.substring(1);
+        console.log("Requested image: %s", s3Key);
 
         let prefix = undefined;
         let width = undefined;
@@ -54,39 +55,46 @@ exports.handler = (event, context, callback) => {
         } catch (e) {
             // client is requesting original image, s3 object key format is <prefix>/<image_name>.<extension>
             // immediately return original 404 response because original image does not exist.
+            console.log("Image not found. Returns 404 response.");
             callback(null, response);
         }
 
         const bucketId = process.env.S3_BUCKET_ID;
         const originalS3Key = prefix + "/" + imageName + "." + extension;
+        console.log("Original image: %s", originalS3Key);
         S3.getObject({Bucket: bucketId, Key: originalS3Key}).promise()
             .then(data => {
-                console.log("resizing image ${originalS3Key} to width: ${width}");
+                console.log("Resizing image %s to width %s", originalS3Key, width);
                 Sharp(data.Body)
-                    .resize(width)
+                    .resize({ width: parseInt(width, 10) })
                     .toFormat(extension === "jpg" ? "jpeg" : extension, undefined)
-                    .toBuffer();
-            })
-            .then(buffer => {
-                S3.putObject({
-                    Body: buffer,
-                    Bucket: bucketId,
-                    ContentType: 'image/' + extension,
-                    Key: s3Key,
-                    StorageClass: 'STANDARD'
-                }).promise().catch(err => {
-                    console.log("Could not write resized image to bucket.", err)
-                });
+                    .toBuffer()
+                    .then(buffer => {
+                        S3.putObject({
+                            Body: buffer,
+                            Bucket: bucketId,
+                            ContentType: 'image/' + extension,
+                            Key: s3Key,
+                            StorageClass: 'STANDARD'
+                        }).promise().catch(err => {
+                            console.log("Could not save resized image to bucket.", err)
+                        });
 
-                // generate response with resized image
-                response.status = 200;
-                response.body = buffer.toString('base64');
-                response.bodyEncoding = 'base64';
-                response.headers['content-type'] = [{key: 'Content-Type', value: 'image/' + extension}];
-                callback(null, response);
+                        // generate response with resized image
+                        response.status = 200;
+                        response.body = buffer.toString('base64');
+                        response.bodyEncoding = 'base64';
+                        response.headers['content-type'] = [{key: 'Content-Type', value: 'image/' + extension}];
+
+                        console.log("Returns resized image.");
+                        callback(null, response);
+                    })
+                    .catch(() => {
+                        console.log("Could not resize image.");
+                    });
             })
-            .catch(err => {
-                console.log("Could not read original image ${originalS3Key}.", err);
+            .catch(() => {
+                console.log("Could not read original image: %s", originalS3Key);
             });
     } else {
         callback(null, response);

@@ -30,12 +30,14 @@ exports.handler = (event, context, callback) => {
     const request = event.Records[0].cf.request;
 
     // parse prefix, image name and extension from original uri: <prefix>/<imageName>.<extension>
+    console.log("Request uri: %s", request.uri);
     const uriMatch = request.uri.match(/(.*)\/(.*)\.(.*)/);
     let prefix = uriMatch[1];
     let imageName = uriMatch[2];
     let extension = uriMatch[3];
 
     // if querystring contains width value, try to match with largest supported value below specified value
+    console.log("Querystring: %s", request.querystring);
     let width = undefined;
     const supportedWidths = process.env.SUPPORTED_WIDTHS.split(',');
     const params = Querystring.parse(request.querystring);
@@ -54,6 +56,7 @@ exports.handler = (event, context, callback) => {
     if (width) newUri.push(width);
     newUri.push(imageName + "." + extension);
     request.uri = newUri.join("/");
+    console.log("Forward uri: %s", request.uri);
 
     callback(null, request);
 };

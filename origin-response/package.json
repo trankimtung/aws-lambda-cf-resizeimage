@@ -1,10 +1,14 @@
 {
   "name": "aws-lambda-cf-resizeimage-origin-response",
   "version": "1.0.0",
-  "description": "",
+  "description": "Resize Images with Amazon CloudFront & Lambda@Edge - Origin Response Function",
   "main": "index.js",
   "keywords": [],
   "author": "Tran Kim Tung <contact@trankimtung.com> (https://www.trankimtung.com)",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/trankimtung/aws-lambda-cf-resizeimage.git"
+  },
   "license": "MIT",
   "dependencies": {
     "sharp": "^0.22.1"

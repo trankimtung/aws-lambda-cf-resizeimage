@@ -1,10 +1,14 @@
 {
   "name": "aws-lambda-cf-resizeimage-viewer-request",
   "version": "1.0.0",
-  "description": "",
+  "description": "Resize Images with Amazon CloudFront & Lambda@Edge - Viewer Request Function",
   "main": "index.js",
   "keywords": [],
   "author": "Tran Kim Tung <contact@trankimtung.com> (https://www.trankimtung.com)",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/trankimtung/aws-lambda-cf-resizeimage.git"
+  },
   "license": "MIT",
   "dependencies": {
     "querystring": "^0.2.0"
