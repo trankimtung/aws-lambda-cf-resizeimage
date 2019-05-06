@@ -30,6 +30,13 @@ const S3 = new AWS.S3({
 });
 const Sharp = require('sharp');
 
+/**
+ * Origin S3 bucket id.
+ *
+ * @type {string}
+ */
+const bucketId = 's3_bucket_id';
+
 exports.handler = (event, context, callback) => {
     let response = event.Records[0].cf.response;
 
@@ -59,7 +66,7 @@ exports.handler = (event, context, callback) => {
             callback(null, response);
         }
 
-        const bucketId = process.env.S3_BUCKET_ID;
+
         const originalS3Key = prefix + "/" + imageName + "." + extension;
         console.log("Original image: %s", originalS3Key);
         S3.getObject({Bucket: bucketId, Key: originalS3Key}).promise()

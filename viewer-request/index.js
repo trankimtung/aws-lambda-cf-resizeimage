@@ -26,6 +26,14 @@
 
 const Querystring = require('querystring');
 
+/**
+ * Width variants clients are allowed to query.
+ * Requested width if not among those specified here will be overridden by the nearest lower specified value.
+ *
+ * @type {number[]}
+ */
+const supportedWidths = [128,256,512,1024,1080,1920,2056];
+
 exports.handler = (event, context, callback) => {
     const request = event.Records[0].cf.request;
 
@@ -39,7 +47,6 @@ exports.handler = (event, context, callback) => {
     // if querystring contains width value, try to match with largest supported value below specified value
     console.log("Querystring: %s", request.querystring);
     let width = undefined;
-    const supportedWidths = process.env.SUPPORTED_WIDTHS.split(',');
     const params = Querystring.parse(request.querystring);
     if (params.w) {
         width = supportedWidths[0];
