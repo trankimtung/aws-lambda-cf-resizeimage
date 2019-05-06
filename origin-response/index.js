@@ -64,6 +64,7 @@ exports.handler = (event, context, callback) => {
             // immediately return original 404 response because original image does not exist.
             console.log("Image not found. Returns 404 response.");
             callback(null, response);
+            return;
         }
 
 
